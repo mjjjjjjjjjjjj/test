@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:druid.properties"/>
+
+    <!-- spring创建mybaits代理对象 -->
+    <!-- 配置SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <!--<property name="defaultAutoCommit" value="false"></property>-->
+        <property name="driverClassName" value="${d.driverClassName}"></property>
+        <property name="url" value="${d.url}"></property>
+        <property name="username" value="${d.username}"></property>
+        <property name="password" value="${d.password}"></property>
+        <property name="initialSize" value="${d.initialSize}"></property>
+        <property name="maxActive" value="${d.maxActive}"></property>
+        <property name="maxWait" value="${d.maxWait}"></property>
+    </bean>
+
+    <!-- 代理对象创建器 -->
+    <bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- 配置去哪个包下找接口创建代理对象 -->
+        <property name="basePackage" value="dao"></property>
+    </bean>
+
+
+</beans>
